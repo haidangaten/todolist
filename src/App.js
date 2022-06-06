@@ -1,23 +1,32 @@
-import logo from './logo.svg';
+import Button from '@atlaskit/button';
+import Textfield from '@atlaskit/textfield';
+import { useState } from 'react';
+import { v4 } from 'uuid';
 import './App.css';
-
+import TodoList from './components/TodoList/TodoList';
 function App() {
+
+  const [todoList, setTodoList] = useState([]);
+  const [textInput, setTextInput] = useState("");
+  const handleChange = (e) =>{
+    setTextInput(e.target.value);
+  };
+
+  const handleAddBtnClick= () =>{
+    setTodoList([...todoList,{id:v4(),name:textInput}]);
+  };
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Textfield
+      name='todo' placeholder='Thêm việc'
+      elemAfterInput={
+        <Button appearance='primary' isDisabled={!textInput} onClick={handleAddBtnClick}>Thêm</Button>
+      }
+      css={{padding:'2px 4px 2px'}} value={textInput} onChange={handleChange}
+      ></Textfield>
+      <TodoList todoList={todoList}/>
     </div>
   );
 }
